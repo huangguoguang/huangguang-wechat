@@ -7,10 +7,8 @@ import com.huangguang.wechat.entity.ClickButton;
 import com.huangguang.wechat.entity.Menu;
 import com.huangguang.wechat.entity.ViewButton;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 菜单工具类
@@ -45,18 +43,24 @@ public class MenuUtil {
     }
 
     /**
-     * 自定义菜单
+     * 自定义菜单创建
      */
-    public static void createMenu() throws Exception{
-        String accessToken = WeChatUtil.getAccessToken().getString("access_token");
-        String url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" + accessToken;
-        Map<String, String> paramMap = new HashMap<String, String>();
+    public static void createMenu(String accessToken) throws Exception{
+        String url = WeChatConstants.MENU_CREATE_URL.replace(WeChatConstants.ACCESS_TOKEN, accessToken);
         String result = HttpClientUtil.jsonPost(url, JSONObject.toJSONString(initMenu()), "utf-8");
         System.out.println(result);
     }
 
+    public static void selectMenu(String accessToken) throws Exception {
+        String url = WeChatConstants.MENU_SELECT_URL.replace(WeChatConstants.ACCESS_TOKEN, accessToken);
+        System.out.println(url);
+        String result = HttpClientUtil.httpGet(url, new HashMap<String, String>(), "utf-8");
+        System.out.println(result);
+    }
+
     public static void main(String[] args) throws Exception {
-        System.out.println(JSONObject.toJSONString(initMenu()));
-        createMenu();
+        String accessToken = WeChatUtil.getAccessToken().getString("access_token");
+        //createMenu(accessToken);
+        selectMenu(accessToken);
     }
 }
