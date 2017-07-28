@@ -1,8 +1,8 @@
-package com.huangguang.wechat.autho.controller;
+package com.huangguang.wechat.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.huangguang.wechat.utils.SHA1;
-import com.huangguang.wechat.utils.WeChatUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,57 +10,40 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
- * Created by huangguang on 2017/7/27.
+ * Created by huangguang on 2017/7/28.
  */
+@RequestMapping(value = "wx")
 @RestController
-@RequestMapping(value = "user")
-public class AutoController {
+public class WeChatUrlController {
+    private static final Logger logger = LoggerFactory.getLogger(WeChatUrlController.class);
 
-    @RequestMapping(value = "wx", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "url", method = {RequestMethod.GET, RequestMethod.POST})
     public Object test(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@");
-        System.out.println(request.getMethod().toLowerCase().equals("get"));
+        logger.info("进入url认证接口, 方法为 ： " + request.getMethod().toLowerCase() );
         if (request.getMethod().toLowerCase().equals("get")) {
             String signature = request.getParameter("signature");
             String timestamp = request.getParameter("timestamp");
             String nonce = request.getParameter("nonce");
             String echostr = request.getParameter("echostr");
-            System.out.println("signature:" + signature);
-            System.out.println("timestamp:" + timestamp);
-            System.out.println("nonce:" + nonce);
-            System.out.println("echostr:" + echostr);
+            logger.info("signature:" + signature);
+            logger.info("timestamp:" + timestamp);
+            logger.info("nonce:" + nonce);
+            logger.info("echostr:" + echostr);
             String str = access(request, response);
             PrintWriter pw = response.getWriter();
             pw.write(str);
             pw.flush();
         } else {
             // 进入POST聊天处理
-            System.out.println("跳转");
+            logger.info("跳转");
         }
         return "success";
-    }
-
-    @RequestMapping(value = "wx/login", method = RequestMethod.GET)
-    public Object autoh(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        System.out.println("#############");
-        String code = request.getParameter("code");
-        Map<String, String> map =new HashMap<String, String>();
-        //获取用户微信信息
-        JSONObject wxUserInfo = WeChatUtil.getWeChatUserInfo(code);
-        if (wxUserInfo == null || wxUserInfo.isEmpty()) {
-            response.sendRedirect(WeChatUtil.getWeChatLoginUrl(request));//重新加载
-        } else {
-            String openid = wxUserInfo.getString("openid");//微信openId
-            String nickname = wxUserInfo.getString("nickname");//微信昵称
-            String headimage = wxUserInfo.getString("headimgurl");//微信头像
-            map.put("wxOpenId", openid);
-            map.put("nickName", nickname);
-            map.put("headImage", headimage);
-        }
-        return map;
     }
 
     /**
@@ -74,7 +57,7 @@ public class AutoController {
      */
     private String access(HttpServletRequest request, HttpServletResponse response) {
         // 验证URL真实性
-        System.out.println("进入验证access");
+        logger.info("进入验证access");
         String signature = request.getParameter("signature");// 微信加密签名
         String timestamp = request.getParameter("timestamp");// 时间戳
         String nonce = request.getParameter("nonce");// 随机数
@@ -95,7 +78,7 @@ public class AutoController {
         if (temp.equals(signature)) {
             return echostr;
         }
-        System.out.println("失败 认证");
+        logger.info("失败 认证");
         return null;
     }
 }
