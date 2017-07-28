@@ -19,11 +19,11 @@ import java.util.*;
  * Created by huangguang on 2017/7/27.
  */
 @RestController
-@RequestMapping(value = "user")
+@RequestMapping(value = "wx")
 public class AuthController {
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
-    @RequestMapping(value = "wx/login", method = RequestMethod.GET)
+    @RequestMapping(value = "login", method = RequestMethod.GET)
     public Object autoh(HttpServletRequest request, HttpServletResponse response) throws Exception {
         logger.info("进入登录接口");
         String code = request.getParameter("code");
