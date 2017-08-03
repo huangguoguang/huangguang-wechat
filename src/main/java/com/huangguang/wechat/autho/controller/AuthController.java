@@ -27,6 +27,10 @@ public class AuthController {
     public Object autoh(HttpServletRequest request, HttpServletResponse response) throws Exception {
         logger.info("进入登录接口");
         String code = request.getParameter("code");
+        System.out.println(code);
+        System.out.println(request.getParameterMap());
+        System.out.println(request.getParameter("orderId"));
+        System.out.println(request.getParameter("state"));
         Map<String, String> map =new HashMap<String, String>();
         //获取用户微信信息
         JSONObject wxUserInfo = WeChatUtil.getWeChatUserInfo(code);

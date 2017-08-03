@@ -9,7 +9,7 @@ public class WeChatConstants {
     public static final String SECRET = "dddb6fc8008e902957a6a10bc2a2f255";
     public static final String ACCESS_TOKEN = "ACCESS_TOKEN";
 
-    public static final String WEB_URL = "http://e30e636b.ngrok.io";
+    public static final String WEB_URL = "http://dedc569e.ngrok.io";
 
     public static final String AUTH_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECTURL&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
 

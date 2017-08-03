@@ -60,7 +60,7 @@ public class MenuUtil {
 
     public static void main(String[] args) throws Exception {
         String accessToken = WeChatUtil.getAccessToken().getString("access_token");
-        //createMenu(accessToken);
-        selectMenu(accessToken);
+        createMenu(accessToken);
+        //selectMenu(accessToken);
     }
 }
