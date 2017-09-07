@@ -1,2 +1,26 @@
 server:
   port: 80
+
+spring:
+  http:
+    encoding:
+      charset: UTF-8
+      force: true
+
+  #启用AOP
+  aop:
+    auto: true
+    proxy-target-class: false
+
+  # 控制台以ANSI彩色输出
+  output:
+    ansi:
+      enabled: always
+
+  # 包含其它配置文件
+  profiles:
+    include: cloud,config,properties
+
+
+
+

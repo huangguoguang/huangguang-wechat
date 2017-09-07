@@ -1,18 +1,20 @@
 package com.huangguang.wechat.autho.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.huangguang.wechat.utils.SHA1;
 import com.huangguang.wechat.utils.WeChatUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 用户授权接口

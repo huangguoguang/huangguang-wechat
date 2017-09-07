@@ -2,6 +2,7 @@ package com.huangguang.wechat.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.huangguang.wechat.constants.WeChatConstants;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
@@ -13,8 +14,6 @@ import java.util.Map;
  * Created by huangguang on 2017/7/27.
  */
 public class WeChatUtil {
-    private static final String APPID = "wx6b421f5d68e983ac";
-    private static final String SECRET = "dddb6fc8008e902957a6a10bc2a2f255";
     private static final String TOKENURL = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
     private static final String REFRESH_URL = "https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=APPID&grant_type=refresh_token&refresh_token=REFRESH_TOKEN";
     private static final String OAUTH_URL = "https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN";
@@ -32,7 +31,7 @@ public class WeChatUtil {
         return userInfo;
     }
 
-    private static JSONObject getUserInfo(JSONObject refreshAccessToken) {
+    public static JSONObject getUserInfo(JSONObject refreshAccessToken) {
         String url = "https://api.weixin.qq.com/sns/userinfo";
         Map<String, String> paramMap = new HashMap<String, String>();
         paramMap.put("access_token", refreshAccessToken.get("access_token").toString());
@@ -45,12 +44,12 @@ public class WeChatUtil {
         //{"openid":"ob5DywlPB9KLE6Dgwmz3L3WycEOQ","nickname":"天嘉广告&印刷（黄光）","sex":1,"language":"zh_CN","city":"武汉","province":"湖北","country":"中国","headimgurl":"http:\/\/wx.qlogo.cn\/mmopen\/AeL1agRcBba3UhAsvPTpQGbqib0gstqP1oJROKiaPbj8w6Lp4YgickPdXjQsb3rLF9qsN25YfGh5aNvFDm9mBNKrFn0M7w63Ade\/0","privilege":[]}
     }
 
-    private static JSONObject refreshAccessToken(String refresh_token) {
+    public static JSONObject refreshAccessToken(String refresh_token) {
         //由于access_token拥有较短的有效期，当access_token超时后，可以使用refresh_token进行刷新，
         // refresh_token有效期为30天，当refresh_token失效之后，需要用户重新授权。
         String url = "https://api.weixin.qq.com/sns/oauth2/refresh_token";
         Map<String, String> paramMap = new HashMap<String, String>();
-        paramMap.put("appid", APPID);
+        paramMap.put("appid", WeChatConstants.APPID);
         paramMap.put("grant_type","refresh_token");
         paramMap.put("refresh_token", refresh_token);
         String result = HttpClientUtil.httpGet(url, paramMap);
@@ -67,8 +66,8 @@ public class WeChatUtil {
         //code说明 ： code作为换取access_token的票据，每次用户授权带上的code将不一样，code只能使用一次，5分钟未被使用自动过期。
         String accTokenUrl = "https://api.weixin.qq.com/sns/oauth2/access_token";
         Map<String, String> paramMap = new HashMap<String, String>();
-        paramMap.put("appid", APPID);
-        paramMap.put("secret",SECRET);
+        paramMap.put("appid", WeChatConstants.APPID);
+        paramMap.put("secret", WeChatConstants.SECRET);
         paramMap.put("code",code);
         paramMap.put("grant_type","authorization_code");
 
@@ -100,7 +99,7 @@ public class WeChatUtil {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        return LOGINURL.replace("APPID", APPID).replace("REDIRECT_URL", redirectUrl);
+        return LOGINURL.replace("APPID", WeChatConstants.APPID).replace("REDIRECT_URL", redirectUrl);
     }
 
     /**
@@ -122,8 +121,8 @@ public class WeChatUtil {
         String url = "https://api.weixin.qq.com/cgi-bin/token";
         Map<String, String> paramMap = new HashMap<String, String>();
         paramMap.put("grant_type", "client_credential");
-        paramMap.put("appid", APPID);
-        paramMap.put("secret", SECRET);
+        paramMap.put("appid", WeChatConstants.APPID);
+        paramMap.put("secret", WeChatConstants.SECRET);
         String result = HttpClientUtil.httpGet(url, paramMap);
         System.out.println(result);
         JSONObject json = JSONObject.parseObject(result);
