@@ -14,12 +14,7 @@ import java.util.Map;
  * Created by huangguang on 2017/7/27.
  */
 public class WeChatUtil {
-    private static final String TOKENURL = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
-    private static final String REFRESH_URL = "https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=APPID&grant_type=refresh_token&refresh_token=REFRESH_TOKEN";
-    private static final String OAUTH_URL = "https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN";
     private static final String LOGINURL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URL&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
-    private static final String WEB_URL = "http://e30e636b.ngrok.io";
-    private static final String COMMONTOKEN = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
     public static JSONObject getWeChatUserInfo(String code) {
         //1、通过code换取授权access_token
         JSONObject accessToken = getAccessToken(code);
@@ -83,7 +78,7 @@ public class WeChatUtil {
     public static String getWeChatLoginUrl(HttpServletRequest request) {
         String redirectUrl = request.getServletPath();
         System.out.println(redirectUrl);
-        redirectUrl = WEB_URL + redirectUrl;
+        redirectUrl = WeChatConstants.WEB_URL + redirectUrl;
         /**
          比如客户端发送http://localhost/test.do?a=b&c=d&e=f
          通过request.getQueryString()得到的是a=b&c=d&e=f

@@ -7,10 +7,12 @@ import com.huangguang.wechat.entity.Button;
 import com.huangguang.wechat.entity.ClickButton;
 import com.huangguang.wechat.entity.Menu;
 import com.huangguang.wechat.entity.ViewButton;
+import com.huangguang.wechat.service.CoreService;
 import com.huangguang.wechat.utils.SHA1;
 import com.huangguang.wechat.utils.WeChatUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +28,9 @@ import java.util.*;
 @RestController
 public class WeChatUrlController {
     private static final Logger logger = LoggerFactory.getLogger(WeChatUrlController.class);
+
+    @Autowired
+    private CoreService coreService;
 
     @RequestMapping(value = "url", method = {RequestMethod.GET, RequestMethod.POST})
     public Object test(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -45,8 +50,15 @@ public class WeChatUrlController {
         } else {
             // 进入POST聊天处理
             logger.info("跳转");
+            //处理微信服务器发来的消息
+            // 消息的接收、处理、响应
+            // 将请求、响应的编码均设置为UTF-8（防止中文乱码）
+            request.setCharacterEncoding("UTF-8");
+            response.setCharacterEncoding("UTF-8");
+
+            String respXml = coreService.processRequest(request, response);
+            return respXml;
         }
-        return "success";
     }
 
 
