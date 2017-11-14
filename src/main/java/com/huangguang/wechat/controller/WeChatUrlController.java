@@ -1,15 +1,7 @@
 package com.huangguang.wechat.controller;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.huangguang.wechat.constants.WeChatConstants;
-import com.huangguang.wechat.entity.Button;
-import com.huangguang.wechat.entity.ClickButton;
-import com.huangguang.wechat.entity.Menu;
-import com.huangguang.wechat.entity.ViewButton;
 import com.huangguang.wechat.service.CoreService;
 import com.huangguang.wechat.utils.SHA1;
-import com.huangguang.wechat.utils.WeChatUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by huangguang on 2017/7/28.
@@ -45,7 +40,6 @@ public class WeChatUrlController {
             logger.info("nonce:" + nonce);
             logger.info("echostr:" + echostr);
             String str = access(request, response);
-            //createMenu();
             return str;
         } else {
             // 进入POST聊天处理
@@ -55,7 +49,6 @@ public class WeChatUrlController {
             // 将请求、响应的编码均设置为UTF-8（防止中文乱码）
             request.setCharacterEncoding("UTF-8");
             response.setCharacterEncoding("UTF-8");
-
             String respXml = coreService.processRequest(request, response);
             return respXml;
         }
